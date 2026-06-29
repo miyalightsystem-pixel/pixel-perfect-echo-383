@@ -18,7 +18,6 @@ export const shareAbsenLink = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data, context }) => {
-    // Cari anggota id dari user yang login
     const { data: anggota } = await context.supabase
       .from("anggota")
       .select("id")
@@ -26,11 +25,34 @@ export const shareAbsenLink = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!anggota) throw new Error("Anggota tidak ditemukan.");
 
+    // Cek slot aktif (belum kadaluarsa)
+    const nowIso = new Date().toISOString();
+    const { data: existing } = await context.supabase
+      .from("absen_share")
+      .select("id, expires_at")
+      .eq("jadwal_id", data.jadwal_id)
+      .eq("tanggal", data.tanggal)
+      .maybeSingle();
+
+    if (existing) {
+      if (existing.expires_at > nowIso) {
+        throw new Error("Yah, ada yang sudah duluan share link absen sesi ini!");
+      }
+      // sudah kadaluarsa — hapus dulu agar bisa di-replace
+      const { error: delErr } = await context.supabase
+        .from("absen_share")
+        .delete()
+        .eq("id", existing.id);
+      if (delErr) throw new Error(delErr.message);
+    }
+
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
     const { error } = await context.supabase.from("absen_share").insert({
       jadwal_id: data.jadwal_id,
       tanggal: data.tanggal,
       link: data.link,
       shared_by: anggota.id,
+      expires_at: expiresAt,
     });
     if (error) {
       if (error.code === "23505") {
@@ -38,8 +60,9 @@ export const shareAbsenLink = createServerFn({ method: "POST" })
       }
       throw new Error(error.message);
     }
-    return { ok: true };
+    return { ok: true, expires_at: expiresAt };
   });
+
 
 export const deleteAbsenShare = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
