@@ -1,0 +1,328 @@
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+@import "shepherd.js/dist/css/shepherd.css";
+@source "../src";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-empire: var(--empire-orange);
+  --color-empire-foreground: var(--empire-foreground);
+  --color-zest: var(--zest-yellow);
+  --color-peel: var(--peel-green);
+  --color-cream: var(--pulp-cream);
+  --color-rind: var(--rind-ink);
+  --color-plum: var(--royal-plum);
+
+  --color-chart-1: var(--empire-orange);
+  --color-chart-2: var(--zest-yellow);
+  --color-chart-3: var(--peel-green);
+  --color-chart-4: var(--royal-plum);
+  --color-chart-5: var(--rind-ink);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ============== TEMA 1: JERUK'S EMPIRE (default) ============== */
+:root,
+.theme-empire {
+  --radius: 0.75rem;
+
+  --empire-orange: oklch(0.681 0.193 41.5);
+  --zest-yellow:   oklch(0.850 0.165 84.5);
+  --peel-green:    oklch(0.530 0.114 130);
+  --pulp-cream:    oklch(0.970 0.025 80);
+  --rind-ink:      oklch(0.225 0.040 50);
+  --royal-plum:    oklch(0.385 0.110 350);
+  --empire-foreground: var(--pulp-cream);
+
+  --background: var(--pulp-cream);
+  --foreground: var(--rind-ink);
+  --card: oklch(0.985 0.018 80);
+  --card-foreground: var(--rind-ink);
+  --popover: oklch(0.985 0.018 80);
+  --popover-foreground: var(--rind-ink);
+  --primary: var(--empire-orange);
+  --primary-foreground: var(--pulp-cream);
+  --secondary: oklch(0.930 0.040 80);
+  --secondary-foreground: var(--rind-ink);
+  --muted: oklch(0.930 0.030 80);
+  --muted-foreground: oklch(0.450 0.040 55);
+  --accent: var(--zest-yellow);
+  --accent-foreground: var(--rind-ink);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--pulp-cream);
+  --border: oklch(0.860 0.040 70);
+  --input: oklch(0.900 0.040 75);
+  --ring: var(--zest-yellow);
+
+  --sidebar: var(--pulp-cream);
+  --sidebar-foreground: var(--rind-ink);
+  --sidebar-primary: var(--empire-orange);
+  --sidebar-primary-foreground: var(--pulp-cream);
+  --sidebar-accent: var(--zest-yellow);
+  --sidebar-accent-foreground: var(--rind-ink);
+  --sidebar-border: oklch(0.860 0.040 70);
+  --sidebar-ring: var(--zest-yellow);
+
+  --font-app-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-app-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ============== TEMA 2: CYBER ORANGE ============== */
+.theme-cyber {
+  --radius: 0.75rem;
+
+  --empire-orange: #ff7a00;
+  --zest-yellow:   #ff9f43;
+  --peel-green:    #c5a059;
+  --pulp-cream:    #14161d;
+  --rind-ink:      #ffffff;
+  --royal-plum:    #c5a059;
+  --empire-foreground: #ffffff;
+
+  --background: #0b0c10;
+  --foreground: #ffffff;
+  --card: #14161d;
+  --card-foreground: #ffffff;
+  --popover: #1c1f26;
+  --popover-foreground: #ffffff;
+  --primary: #ff7a00;
+  --primary-foreground: #ffffff;
+  --secondary: #1c1f26;
+  --secondary-foreground: #c4c4cc;
+  --muted: #1c1f26;
+  --muted-foreground: #727682;
+  --accent: #ff9f43;
+  --accent-foreground: #0b0c10;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 122, 0, 0.2);
+  --input: #1c1f26;
+  --ring: #ff7a00;
+
+  --sidebar: #0b0c10;
+  --sidebar-foreground: #c4c4cc;
+  --sidebar-primary: #ff7a00;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c1f26;
+  --sidebar-accent-foreground: #ff9f43;
+  --sidebar-border: rgba(255, 122, 0, 0.2);
+  --sidebar-ring: #ff7a00;
+
+  --font-app-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-app-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+.theme-cyber body {
+  background-color: #0b0c10;
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(255, 122, 0, 0.18), transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(255, 122, 0, 0.12), transparent 50%),
+    radial-gradient(circle at 50% 50%, #1a1c23, #0b0c10 70%);
+  background-attachment: fixed;
+}
+.theme-cyber h1,
+.theme-cyber h2,
+.theme-cyber h3,
+.theme-cyber .font-display {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ff9f43, #ff6b00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.theme-cyber .text-empire,
+.theme-cyber .text-rind {
+  color: #ff9f43 !important;
+}
+.theme-cyber .text-muted-foreground { color: #727682; }
+.theme-cyber .bg-card { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 122, 0, 0.1); }
+
+/* ============== TEMA 3: CINEMATIC DARK (Netflix) ============== */
+.theme-cinematic {
+  --radius: 0.25rem; /* lebih kotak */
+
+  --empire-orange: #e50914;
+  --zest-yellow:   #e50914;
+  --peel-green:    #ffffff;
+  --pulp-cream:    #232323;
+  --rind-ink:      #ffffff;
+  --royal-plum:    #e50914;
+  --empire-foreground: #ffffff;
+
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #232323;
+  --card-foreground: #ffffff;
+  --popover: #2d2d2d;
+  --popover-foreground: #ffffff;
+  --primary: #e50914;
+  --primary-foreground: #ffffff;
+  --secondary: #2d2d2d;
+  --secondary-foreground: #ffffff;
+  --muted: #232323;
+  --muted-foreground: #b3b3b3;
+  --accent: #e50914;
+  --accent-foreground: #ffffff;
+  --destructive: #e50914;
+  --destructive-foreground: #ffffff;
+  --border: #808080;
+  --input: #2d2d2d;
+  --ring: #ffffff;
+
+  --sidebar: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #e50914;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2d2d2d;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #808080;
+  --sidebar-ring: #ffffff;
+
+  --font-app-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-app-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.theme-cinematic h1 { font-size: 2.5rem; line-height: 1.1; font-weight: 700; }
+.theme-cinematic .text-empire { color: #e50914 !important; }
+.theme-cinematic .bg-empire { background-color: #e50914 !important; }
+.theme-cinematic :focus-visible { outline-color: #ffffff !important; outline-width: 3px !important; }
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-app-sans, "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-app-display, "Fraunces", ui-serif, Georgia, serif);
+    letter-spacing: -0.01em;
+  }
+
+  .font-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Crest animations */
+@keyframes crest-bloom {
+  0%   { transform: scale(0.4) rotate(-20deg); opacity: 0; }
+  60%  { transform: scale(1.05) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes segment-bloom {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.crest-bloom { animation: crest-bloom 700ms cubic-bezier(.2,.8,.2,1) both; }
+.segment-bloom { animation: segment-bloom 500ms ease-out both; transform-origin: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .crest-bloom, .segment-bloom { animation: none !important; }
+}
+
+/* ============== Shepherd.js (guided tour) themed ============== */
+.shepherd-element.empire-shepherd {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  max-width: 360px;
+}
+.shepherd-element.empire-shepherd .shepherd-header {
+  background-color: transparent;
+  padding: 14px 16px 0;
+}
+.shepherd-element.empire-shepherd .shepherd-title {
+  color: var(--primary);
+  font-family: var(--font-app-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.shepherd-element.empire-shepherd .shepherd-text {
+  color: var(--card-foreground);
+  padding: 8px 16px 16px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.shepherd-element.empire-shepherd .shepherd-footer {
+  padding: 0 16px 14px;
+  gap: 8px;
+}
+.shepherd-element.empire-shepherd .shepherd-button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: calc(var(--radius) - 4px);
+  font-weight: 600;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  border: none;
+}
+.shepherd-element.empire-shepherd .shepherd-button:hover {
+  filter: brightness(1.1);
+}
+.shepherd-element.empire-shepherd .shepherd-button.shepherd-button-secondary {
+  background-color: transparent;
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+}
+.shepherd-element.empire-shepherd .shepherd-cancel-icon {
+  color: var(--muted-foreground);
+  font-size: 1.4rem;
+}
+.shepherd-element.empire-shepherd .shepherd-arrow:before {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+.shepherd-modal-overlay-container {
+  opacity: 0.55;
+}
