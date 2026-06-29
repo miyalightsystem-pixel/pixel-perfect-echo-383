@@ -170,11 +170,16 @@ function Perbendaharaan() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="font-display text-3xl text-empire">Perbendaharaan</h1>
-        <p className="text-sm text-muted-foreground">
-          Hanya {member && canManage ? "Anda — " : ""}Bendahara & Yang Mulia yang dapat mengubah catatan.
-        </p>
+      <header className="flex items-end justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="font-display text-3xl text-empire">Perbendaharaan</h1>
+          <p className="text-sm text-muted-foreground">
+            Hanya {member && canManage ? "Anda — " : ""}Bendahara & Yang Mulia yang dapat mengubah catatan.
+          </p>
+        </div>
+        <Button variant="outline" onClick={exportPdf} className="gap-1.5">
+          <FileDown className="size-4" /> Unduh Laporan PDF
+        </Button>
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -193,6 +198,36 @@ function Perbendaharaan() {
           <p className="font-mono text-2xl">{formatRupiah(totals.keluar)}</p>
         </div>
       </section>
+
+      {monthly.length > 0 && (
+        <section className="rounded-2xl border bg-card p-4">
+          <h2 className="font-display text-xl text-empire mb-3">Arus Kas per Bulan</h2>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={monthly} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="bulan" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                <YAxis
+                  tick={{ fontSize: 11 }}
+                  stroke="hsl(var(--muted-foreground))"
+                  tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
+                />
+                <Tooltip
+                  formatter={(v: number) => formatRupiah(v)}
+                  contentStyle={{
+                    background: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: 8,
+                  }}
+                />
+                <Legend />
+                <Bar dataKey="masuk" name="Masuk" fill="var(--peel-green, #4caf50)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="keluar" name="Keluar" fill="hsl(var(--empire, 30 70% 45%))" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+      )}
 
       {/* Pembayaran per anggota */}
       <section className="rounded-2xl border bg-card overflow-hidden">
