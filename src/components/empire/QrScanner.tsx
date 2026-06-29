@@ -66,7 +66,7 @@ export function QrScanner({ onDetect, onClose }: Props) {
       // Stop camera while decoding image
       const s = scannerRef.current;
       if (s && status === "running") {
-        await s.stop().catch(() => {});
+        try { await s.stop(); } catch { /* ignore */ }
       }
       const instance = scannerRef.current ?? new Html5Qrcode(ELEMENT_ID, { verbose: false });
       scannerRef.current = instance;
