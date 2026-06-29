@@ -16,7 +16,10 @@ import {
   HelpCircle,
   QrCode,
   FolderOpen,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useTheme } from "@/lib/theme-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { DISCORD_INVITE_URL, TUGAS_DRIVE_URL } from "@/lib/external-links";
 import { Crest } from "./Crest";
@@ -108,6 +111,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <HelpCircle className="size-4" />
             </button>
+            <DarkModeToggle />
             <ThemeSwitcher />
           </div>
 
@@ -256,5 +260,20 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </nav>
     </div>
+  );
+}
+
+function DarkModeToggle() {
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "cinematic" || theme === "cyber";
+  return (
+    <button
+      aria-label={isDark ? "Mode terang" : "Mode gelap"}
+      title={isDark ? "Mode terang" : "Mode gelap"}
+      onClick={() => setTheme(isDark ? "empire" : "cinematic")}
+      className="flex items-center justify-center rounded-full border border-border/70 bg-card size-9 hover:bg-accent/30 transition-colors"
+    >
+      {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+    </button>
   );
 }

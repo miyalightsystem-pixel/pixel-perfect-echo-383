@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Crown, Instagram, MessageCircle, Plus } from "lucide-react";
 import { anggotaListQuery } from "@/lib/queries";
 import { createAnggota } from "@/lib/empire.functions";
+import { useActiveMember, canManageMembers } from "@/lib/active-member";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,6 +48,8 @@ const roleLabel: Record<string, string> = {
 function ParaBangsawan() {
   const qc = useQueryClient();
   const { data: anggota } = useQuery(anggotaListQuery);
+  const { member } = useActiveMember();
+  const canManage = canManageMembers(member?.role);
   const fn = useServerFn(createAnggota);
 
   const mut = useMutation({
@@ -56,6 +59,7 @@ function ParaBangsawan() {
       foto_url?: string | null;
       ig?: string | null;
       wa?: string | null;
+      actor_id: string;
     }) => fn({ data: input }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["anggota"] });
@@ -69,9 +73,14 @@ function ParaBangsawan() {
       <header className="flex items-center justify-between gap-3 flex-wrap">
         <div>
           <h1 className="font-display text-3xl text-empire">Para Bangsawan</h1>
-          <p className="text-sm text-muted-foreground">Daftar penghuni kerajaan.</p>
+          <p className="text-sm text-muted-foreground">
+            Daftar penghuni kerajaan.
+            {!canManage && " Hanya Yang Mulia / Sekretaris yang berhak menambah."}
+          </p>
         </div>
-        <TambahDialog onSubmit={(d) => mut.mutate(d)} />
+        {canManage && member && (
+          <TambahDialog onSubmit={(d) => mut.mutate({ ...d, actor_id: member.id })} />
+        )}
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

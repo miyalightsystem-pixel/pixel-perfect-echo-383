@@ -37,6 +37,14 @@ export const togglePinTitah = createServerFn({ method: "POST" })
   });
 
 // ---------- TUGAS ----------
+async function assertManageTugas(sb: Awaited<ReturnType<typeof admin>>, actor_id?: string) {
+  if (!actor_id) throw new Error("Aksi memerlukan identitas Bangsawan.");
+  const { data: actor } = await sb.from("anggota").select("role").eq("id", actor_id).maybeSingle();
+  if (!actor || !["yang_mulia", "sekretaris", "manager"].includes(actor.role)) {
+    throw new Error("Hanya Yang Mulia atau Sekretaris yang berhak mengubah titah tugas.");
+  }
+}
+
 export const createTugas = createServerFn({ method: "POST" })
   .inputValidator((input) =>
     z
@@ -44,12 +52,48 @@ export const createTugas = createServerFn({ method: "POST" })
         judul: z.string().min(1).max(200),
         matkul: z.string().min(1).max(100),
         deadline: z.string().min(1),
+        actor_id: uuid.optional(),
       })
       .parse(input),
   )
   .handler(async ({ data }) => {
     const sb = await admin();
-    const { error } = await sb.from("tugas").insert(data);
+    await assertManageTugas(sb, data.actor_id);
+    const { actor_id: _omit, ...row } = data;
+    const { error } = await sb.from("tugas").insert(row);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const updateTugas = createServerFn({ method: "POST" })
+  .inputValidator((input) =>
+    z
+      .object({
+        id: uuid,
+        judul: z.string().min(1).max(200),
+        matkul: z.string().min(1).max(100),
+        deadline: z.string().min(1),
+        actor_id: uuid,
+      })
+      .parse(input),
+  )
+  .handler(async ({ data }) => {
+    const sb = await admin();
+    await assertManageTugas(sb, data.actor_id);
+    const { error } = await sb
+      .from("tugas")
+      .update({ judul: data.judul, matkul: data.matkul, deadline: data.deadline })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const deleteTugas = createServerFn({ method: "POST" })
+  .inputValidator((input) => z.object({ id: uuid, actor_id: uuid }).parse(input))
+  .handler(async ({ data }) => {
+    const sb = await admin();
+    await assertManageTugas(sb, data.actor_id);
+    const { error } = await sb.from("tugas").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -256,7 +300,8 @@ export const createFoto = createServerFn({ method: "POST" })
   .inputValidator((input) =>
     z
       .object({
-        url: z.string().url(),
+        // bisa URL eksternal (legacy) atau storage path "kenangan/..."
+        url: z.string().min(1).max(500),
         caption: z.string().max(200).optional().nullable(),
         uploader_id: uuid.optional().nullable(),
       })
@@ -314,12 +359,18 @@ export const createAnggota = createServerFn({ method: "POST" })
         role: z.enum(["yang_mulia", "bendahara", "sekretaris", "bangsawan"]),
         ig: z.string().max(50).optional().nullable(),
         wa: z.string().max(30).optional().nullable(),
+        actor_id: uuid,
       })
       .parse(input),
   )
   .handler(async ({ data }) => {
     const sb = await admin();
-    const { error } = await sb.from("anggota").insert(data);
+    const { data: actor } = await sb.from("anggota").select("role").eq("id", data.actor_id).maybeSingle();
+    if (!actor || !["yang_mulia", "sekretaris", "manager"].includes(actor.role)) {
+      throw new Error("Hanya Yang Mulia atau Sekretaris yang berhak menambah Bangsawan.");
+    }
+    const { actor_id: _omit, ...row } = data;
+    const { error } = await sb.from("anggota").insert(row);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
