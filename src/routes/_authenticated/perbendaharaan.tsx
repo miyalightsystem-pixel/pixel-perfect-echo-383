@@ -213,7 +213,7 @@ function Perbendaharaan() {
                   tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
-                  formatter={(v: number) => formatRupiah(v)}
+                  formatter={(v) => formatRupiah(Number(v) || 0)}
                   contentStyle={{
                     background: "hsl(var(--card))",
                     border: "1px solid hsl(var(--border))",
