@@ -111,6 +111,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <HelpCircle className="size-4" />
             </button>
+            <DarkModeToggle />
             <ThemeSwitcher />
           </div>
 
