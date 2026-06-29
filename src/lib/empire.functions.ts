@@ -10,7 +10,7 @@ async function admin() {
 
 // ---------- TITAH ----------
 export const createTitah = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         judul: z.string().min(1).max(200),
@@ -28,7 +28,7 @@ export const createTitah = createServerFn({ method: "POST" })
   });
 
 export const togglePinTitah = createServerFn({ method: "POST" })
-  .inputValidator((input) => z.object({ id: uuid, pinned: z.boolean() }).parse(input))
+  .validator((input) => z.object({ id: uuid, pinned: z.boolean() }).parse(input))
   .handler(async ({ data }) => {
     const sb = await admin();
     const { error } = await sb.from("titah").update({ pinned: data.pinned }).eq("id", data.id);
@@ -46,7 +46,7 @@ async function assertManageTugas(sb: Awaited<ReturnType<typeof admin>>, actor_id
 }
 
 export const createTugas = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         judul: z.string().min(1).max(200),
@@ -66,7 +66,7 @@ export const createTugas = createServerFn({ method: "POST" })
   });
 
 export const updateTugas = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         id: uuid,
@@ -89,7 +89,7 @@ export const updateTugas = createServerFn({ method: "POST" })
   });
 
 export const deleteTugas = createServerFn({ method: "POST" })
-  .inputValidator((input) => z.object({ id: uuid, actor_id: uuid }).parse(input))
+  .validator((input) => z.object({ id: uuid, actor_id: uuid }).parse(input))
   .handler(async ({ data }) => {
     const sb = await admin();
     await assertManageTugas(sb, data.actor_id);
@@ -99,7 +99,7 @@ export const deleteTugas = createServerFn({ method: "POST" })
   });
 
 export const setTugasStatus = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z.object({
       id: uuid,
       status: z.enum(["belum", "dikerjakan", "selesai"]),
@@ -120,7 +120,7 @@ export const setTugasStatus = createServerFn({ method: "POST" })
   });
 
 export const markPersonalDone = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z.object({ tugas_id: uuid, anggota_id: uuid, done: z.boolean() }).parse(input),
   )
   .handler(async ({ data }) => {
@@ -143,7 +143,7 @@ export const markPersonalDone = createServerFn({ method: "POST" })
 
 // ---------- JADWAL ----------
 export const createJadwal = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         hari: z.number().int().min(1).max(7),
@@ -162,7 +162,7 @@ export const createJadwal = createServerFn({ method: "POST" })
   });
 
 export const deleteJadwal = createServerFn({ method: "POST" })
-  .inputValidator((input) => z.object({ id: uuid }).parse(input))
+  .validator((input) => z.object({ id: uuid }).parse(input))
   .handler(async ({ data }) => {
     const sb = await admin();
     const { error } = await sb.from("jadwal").delete().eq("id", data.id);
@@ -172,7 +172,7 @@ export const deleteJadwal = createServerFn({ method: "POST" })
 
 // ---------- EVENT AKADEMIK ----------
 export const createEvent = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         nama: z.string().min(1).max(100),
@@ -191,7 +191,7 @@ export const createEvent = createServerFn({ method: "POST" })
 
 // ---------- MATERI ----------
 export const createMateri = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         matkul: z.string().min(1).max(100),
@@ -209,7 +209,7 @@ export const createMateri = createServerFn({ method: "POST" })
 
 // ---------- KAS ----------
 export const recordPembayaran = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         periode_id: uuid,
@@ -242,7 +242,7 @@ export const recordPembayaran = createServerFn({ method: "POST" })
   });
 
 export const recordPengeluaran = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z.object({
       deskripsi: z.string().min(1).max(200),
       jumlah: z.number().int().min(1),
@@ -261,7 +261,7 @@ export const recordPengeluaran = createServerFn({ method: "POST" })
   });
 
 export const createKasPeriode = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z.object({
       label: z.string().min(1).max(50),
       nominal_per_orang: z.number().int().min(0),
@@ -297,7 +297,7 @@ export const createKasPeriode = createServerFn({ method: "POST" })
 
 // ---------- FOTO ----------
 export const createFoto = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         // bisa URL eksternal (legacy) atau storage path "kenangan/..."
@@ -316,7 +316,7 @@ export const createFoto = createServerFn({ method: "POST" })
 
 // ---------- FORUM ----------
 export const createForumTopik = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         judul: z.string().min(1).max(200),
@@ -333,7 +333,7 @@ export const createForumTopik = createServerFn({ method: "POST" })
   });
 
 export const createForumBalasan = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         topik_id: uuid,
@@ -351,7 +351,7 @@ export const createForumBalasan = createServerFn({ method: "POST" })
 
 // ---------- ANGGOTA ----------
 export const createAnggota = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         nama: z.string().min(1).max(100),

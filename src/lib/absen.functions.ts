@@ -8,7 +8,7 @@ const uuid = z.string().uuid();
 // "Siapa cepat dia dapat" — gagal kalau sudah ada yang share lebih dulu.
 export const shareAbsenLink = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
         jadwal_id: uuid,
@@ -66,7 +66,7 @@ export const shareAbsenLink = createServerFn({ method: "POST" })
 
 export const deleteAbsenShare = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ id: uuid }).parse(input))
+  .validator((input) => z.object({ id: uuid }).parse(input))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase.from("absen_share").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
