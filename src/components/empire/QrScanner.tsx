@@ -54,7 +54,7 @@ export function QrScanner({ onDetect, onClose }: Props) {
       mounted = false;
       const s = scannerRef.current;
       if (s) {
-        s.stop().catch(() => {}).finally(() => s.clear().catch(() => {}));
+        Promise.resolve(s.stop()).catch(() => {}).finally(() => s.clear().catch(() => {}));
       }
     };
   }, [onDetect]);
