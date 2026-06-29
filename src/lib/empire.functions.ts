@@ -359,12 +359,18 @@ export const createAnggota = createServerFn({ method: "POST" })
         role: z.enum(["yang_mulia", "bendahara", "sekretaris", "bangsawan"]),
         ig: z.string().max(50).optional().nullable(),
         wa: z.string().max(30).optional().nullable(),
+        actor_id: uuid,
       })
       .parse(input),
   )
   .handler(async ({ data }) => {
     const sb = await admin();
-    const { error } = await sb.from("anggota").insert(data);
+    const { data: actor } = await sb.from("anggota").select("role").eq("id", data.actor_id).maybeSingle();
+    if (!actor || !["yang_mulia", "sekretaris", "manager"].includes(actor.role)) {
+      throw new Error("Hanya Yang Mulia atau Sekretaris yang berhak menambah Bangsawan.");
+    }
+    const { actor_id: _omit, ...row } = data;
+    const { error } = await sb.from("anggota").insert(row);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
