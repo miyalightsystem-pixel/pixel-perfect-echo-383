@@ -21,12 +21,14 @@ export const Route = createFileRoute("/_authenticated")({
 
 function AuthenticatedLayout() {
   const { user } = Route.useRouteContext();
-  const [checking, setChecking] = useState(true);
-  const [hasMember, setHasMember] = useState<boolean>(false);
+  const isGuest = user.id === "guest";
+  const [checking, setChecking] = useState(!isGuest);
+  const [hasMember, setHasMember] = useState<boolean>(isGuest);
   const [pending, setPending] = useState<{ email: string; created_at: string } | null>(null);
 
   const { refetch } = useQuery({
     queryKey: ["membership-check", user.id],
+    enabled: !isGuest,
     queryFn: async () => {
       const [{ data: anggota }, { data: pendingRow }] = await Promise.all([
         supabase.from("anggota").select("id").eq("user_id", user.id).maybeSingle(),
@@ -41,10 +43,11 @@ function AuthenticatedLayout() {
 
   // Poll every 8s while pending so user sees approval automatically
   useEffect(() => {
+    if (isGuest) return;
     if (!pending || hasMember) return;
     const t = setInterval(() => refetch(), 8000);
     return () => clearInterval(t);
-  }, [pending, hasMember, refetch]);
+  }, [pending, hasMember, refetch, isGuest]);
 
   // Auto-start onboarding tour on first visit after membership confirmed
   useEffect(() => {
