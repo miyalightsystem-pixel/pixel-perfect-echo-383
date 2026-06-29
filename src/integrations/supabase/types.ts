@@ -17,6 +17,7 @@ export type Database = {
       absen_share: {
         Row: {
           created_at: string
+          expires_at: string
           id: string
           jadwal_id: string
           link: string
@@ -25,6 +26,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          expires_at?: string
           id?: string
           jadwal_id: string
           link: string
@@ -33,6 +35,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          expires_at?: string
           id?: string
           jadwal_id?: string
           link?: string
