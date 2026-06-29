@@ -13,8 +13,12 @@ import { hasCompletedTour, startTour } from "@/lib/onboarding-tour";
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    return { user: data.user ?? ({ id: "guest", email: "guest@scan.local" } as any) };
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) {
+      const { redirect } = await import("@tanstack/react-router");
+      throw redirect({ to: "/auth" });
+    }
+    return { user: data.user };
   },
   component: AuthenticatedLayout,
 });
