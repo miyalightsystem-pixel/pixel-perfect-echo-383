@@ -31,7 +31,6 @@ function AuthenticatedLayout() {
 
   const { refetch } = useQuery({
     queryKey: ["membership-check", user.id],
-    enabled: !isGuest,
     queryFn: async () => {
       const [{ data: anggota }, { data: pendingRow }] = await Promise.all([
         supabase.from("anggota").select("id").eq("user_id", user.id).maybeSingle(),
@@ -46,11 +45,10 @@ function AuthenticatedLayout() {
 
   // Poll every 8s while pending so user sees approval automatically
   useEffect(() => {
-    if (isGuest) return;
     if (!pending || hasMember) return;
     const t = setInterval(() => refetch(), 8000);
     return () => clearInterval(t);
-  }, [pending, hasMember, refetch, isGuest]);
+  }, [pending, hasMember, refetch]);
 
   // Auto-start onboarding tour on first visit after membership confirmed
   useEffect(() => {
