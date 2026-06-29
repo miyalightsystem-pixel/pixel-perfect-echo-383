@@ -16,7 +16,10 @@ import {
   HelpCircle,
   QrCode,
   FolderOpen,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useTheme } from "@/lib/theme-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { DISCORD_INVITE_URL, TUGAS_DRIVE_URL } from "@/lib/external-links";
 import { Crest } from "./Crest";
