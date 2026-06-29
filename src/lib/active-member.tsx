@@ -79,9 +79,14 @@ export function isAdmin(role?: Anggota["role"] | null) {
   return role === "manager" || role === "yang_mulia";
 }
 export function canManageKas(role?: Anggota["role"] | null) {
-  // Hanya admin (yang_mulia / manager) yang boleh mengatur perbendaharaan.
   return role === "yang_mulia" || role === "manager";
 }
 export function canManageJadwal(role?: Anggota["role"] | null) {
+  return role === "yang_mulia" || role === "sekretaris" || role === "manager";
+}
+export function canManageTugas(role?: Anggota["role"] | null) {
+  return role === "yang_mulia" || role === "sekretaris" || role === "manager";
+}
+export function canManageMembers(role?: Anggota["role"] | null) {
   return role === "yang_mulia" || role === "sekretaris" || role === "manager";
 }
