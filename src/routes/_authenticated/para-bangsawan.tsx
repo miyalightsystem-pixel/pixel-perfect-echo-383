@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Crown, Instagram, MessageCircle, Plus } from "lucide-react";
 import { anggotaListQuery } from "@/lib/queries";
 import { createAnggota } from "@/lib/empire.functions";
+import { useActiveMember, canManageMembers } from "@/lib/active-member";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
