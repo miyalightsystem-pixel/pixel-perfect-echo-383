@@ -25,9 +25,8 @@ export const Route = createFileRoute("/_authenticated")({
 
 function AuthenticatedLayout() {
   const { user } = Route.useRouteContext();
-  const isGuest = user.id === "guest";
-  const [checking, setChecking] = useState(!isGuest);
-  const [hasMember, setHasMember] = useState<boolean>(isGuest);
+  const [checking, setChecking] = useState(true);
+  const [hasMember, setHasMember] = useState<boolean>(false);
   const [pending, setPending] = useState<{ email: string; created_at: string } | null>(null);
 
   const { refetch } = useQuery({
