@@ -300,7 +300,8 @@ export const createFoto = createServerFn({ method: "POST" })
   .inputValidator((input) =>
     z
       .object({
-        url: z.string().url(),
+        // bisa URL eksternal (legacy) atau storage path "kenangan/..."
+        url: z.string().min(1).max(500),
         caption: z.string().max(200).optional().nullable(),
         uploader_id: uuid.optional().nullable(),
       })
