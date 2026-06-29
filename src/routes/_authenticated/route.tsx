@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Clock, LogOut } from "lucide-react";
 import { hasCompletedTour, startTour } from "@/lib/onboarding-tour";
 
+// ⚠️ SEMENTARA: gerbang auth dibuka untuk audit/scan eksternal.
+// Kembalikan blok beforeLoad asli setelah perbaikan selesai.
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async () => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) throw redirect({ to: "/auth" });
-    return { user: data.user };
+    const { data } = await supabase.auth.getUser();
+    return { user: data.user ?? ({ id: "guest", email: "guest@scan.local" } as any) };
   },
   component: AuthenticatedLayout,
 });
